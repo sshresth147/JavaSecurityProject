@@ -17,3 +17,11 @@ spring:
     hibernate:
       ddl-auto: update
       show-sql: true
+
+
+logging:
+  level:
+    root: INFO              # general log level
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG       # logs executed SQL
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # logs parameter values
