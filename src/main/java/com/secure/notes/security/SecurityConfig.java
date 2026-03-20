@@ -36,7 +36,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
 /// adding two user as admin and user
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
 
         if (!manager.userExists("user1")) {  //Prevents duplicate user creation on restart
             manager.createUser(
