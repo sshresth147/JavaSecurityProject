@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,5 +31,31 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+/// adding two user as admin and user
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+
+        if (!manager.userExists("user1")) {  //Prevents duplicate user creation on restart
+            manager.createUser(
+                    User.withUsername("user1")
+                            .password("{noop}password1") //Means no encoding
+                            .roles("USER")
+                            .build()
+            );
+        }
+
+        if (!manager.userExists("admin")) {  //Prevents duplicate user creation on restart
+            manager.createUser(
+                    User.withUsername("admin")
+                            .password("{noop}adminPass") //Means no encoding
+                            .roles("ADMIN")
+                            .build()
+            );
+        }
+
+        return manager;
     }
 }
